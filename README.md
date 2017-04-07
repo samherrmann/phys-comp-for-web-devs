@@ -1,6 +1,10 @@
 # Physical Computing for Web Devs
 
 
+## Dev Env
+* Ubuntu 16.04
+
+
 ## Problems
 * No text to voice
 * Arduino IDE: No permission to upload to board
