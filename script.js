@@ -1,5 +1,4 @@
 nw.require("nwjs-j5-fix").fix();
-nw.Window.get().showDevTools();
 
 var five = nw.require("johnny-five");
 var board = new five.Board({
@@ -14,4 +13,18 @@ board.on("ready", function() {
 
     var led = new five.Led();
     led.blink(interval);
+
+
+    QuickSettings.create(100, 100, "LED Settings")
+        .addRange("interval", 50, 500, 250, 5, function(value) {
+            interval = value;
+            led.blink(interval);
+        })
+        .addButton("Toggle", function(value) {
+            if(led.isRunning) {
+                led.stop().off();
+            } else {
+                led.blink(interval);
+            }
+        })
 });
