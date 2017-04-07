@@ -3,4 +3,5 @@
 
 ## Problems
 * No text to voice
-* No permission to upload to board
+* Arduino IDE: No permission to upload to board
+** Resolution: `sudo usermod -a -G dialout sam`
