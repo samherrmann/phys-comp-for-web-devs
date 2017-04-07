@@ -9,22 +9,16 @@ board.on("ready", function() {
     console.log("I can see the board!");
 
     var pin = 13;
-        interval = 250;
 
     var led = new five.Led();
-    led.blink(interval);
+    led.on();
 
+    var proximity = new five.Proximity({
+        controller: "2Y0A21",
+        pin: "A0"
+    });
 
-    QuickSettings.create(100, 100, "LED Settings")
-        .addRange("interval", 50, 500, 250, 5, function(value) {
-            interval = value;
-            led.blink(interval);
-        })
-        .addButton("Toggle", function(value) {
-            if(led.isRunning) {
-                led.stop().off();
-            } else {
-                led.blink(interval);
-            }
-        })
+    proximity.within([8, 65], "cm", function() {
+        console.log(this.cm);
+    });
 });
