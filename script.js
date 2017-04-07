@@ -16,24 +16,24 @@ window.addEventListener("DOMContentLoaded", function() {
         var led = new five.Led();
         led.on();
 
-        var proximity = new five.Proximity({
-            controller: "2Y0A21",
-            pin: "A0"
+        var servo = new five.Servo({
+            pin: 10,
+            center: true,
         });
 
-        setInterval(function() {
-            if(proximity.cm > 8 && proximity.cm < 65) {
-                if(osc.volume.value <= -Infinity) {
-                    osc.volume.rampTo(-6, 0.02);
-                } else {
-                    osc.frequency.rampTo(proximity.cm * 20, 0.1);
-                }
-            } else {
-                if(osc.volume.value > -Infinity) {
-                    osc.volume.rampTo(-Infinity, 1);
-                }
+        document.querySelector("input").addEventListener("keyup", function(e) {
+            if(e.keyCode != 13) return;
+            var positions = {
+                yes: 30,
+                maybe: 90,
+                no: 150
             }
-        }, 25);
+            var answer = ["yes", "maybe", "no"][Math.floor(Math.random() * 3)];
+            servo.sweep();
+            setTimeout(function() {
+                servo.stop();
+                servo.to(positions[answer]);
+            }, 3000);
+        });
     });
 });
-
