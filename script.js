@@ -13,27 +13,40 @@ window.addEventListener("DOMContentLoaded", function() {
      board.on("ready", function() {
         console.log("I can see the board!");
 
-        var led = new five.Led();
-        led.on();
-
-        var servo = new five.Servo({
-            pin: 10,
-            center: true,
-        });
-
-        document.querySelector("input").addEventListener("keyup", function(e) {
-            if(e.keyCode != 13) return;
-            var positions = {
-                yes: 30,
-                maybe: 90,
-                no: 150
+        var led = new five.Led.RGB({
+            pins: {
+                red: 3,
+                blue: 5,
+                green: 6
             }
-            var answer = ["yes", "maybe", "no"][Math.floor(Math.random() * 3)];
-            servo.sweep();
-            setTimeout(function() {
-                servo.stop();
-                servo.to(positions[answer]);
-            }, 3000);
         });
+
+        var settings = QuickSettings.create(100, 100, "Settings")
+            .addRange("intensity", 0, 100, 50, 1, function() {
+                led.intensity(settings.getRangeValue("intensity"));
+            })
+            .addColor("color", "#ffffff", function() {
+                led.color(settings.getColor("color"));
+            })
+            .addButton("toggle", function() {
+                led.toggle();
+            });
+
+            var image = document.querySelector("img");
+            var canvas = document.querySelector("canvas");
+            var context = canvas.getContext("2d");
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            context.drawImage(image, 0, 0, image.width, image.height);
+            canvas.addEventListener("mousemove", function(e) {
+                let [r, g, b, a] = context.getImageData(e.clientX, e.clientY, 1, 1).data;
+                led.color({
+                    red: r,
+                    green: g,
+                    blue: b
+                });
+            });
     });
 });

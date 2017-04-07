@@ -13,9 +13,6 @@ canvas {
     height: 100%;
 }
 
-input {
-    margin: 150px auto 0 auto;
-    display: block;
-    width: 80%;
-    font-size: 1.5em;
+img {
+    display: none;
 }
