@@ -1,10 +1,17 @@
+nw.require("nwjs-j5-fix").fix();
 nw.Window.get().showDevTools();
 
-var os = nw.require("os");
-console.log(os.type);
-
-$(document).ready(function(){
-    $("body").append(os.hostname);
+var five = nw.require("johnny-five");
+var board = new five.Board({
+    port: "/dev/ttyUSB0"
 });
 
-chrome.tts.speak("ForwardJS rocks!");
+board.on("ready", function() {
+    console.log("I can see the board!");
+
+    var pin = 13;
+        interval = 250;
+
+    var led = new five.Led();
+    led.blink(interval);
+});
