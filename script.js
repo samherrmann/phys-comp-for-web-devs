@@ -21,10 +21,19 @@ window.addEventListener("DOMContentLoaded", function() {
             pin: "A0"
         });
 
-        proximity.within([8, 65], "cm", function() {
-            console.log(this.cm);
-        });
+        setInterval(function() {
+            if(proximity.cm > 8 && proximity.cm < 65) {
+                if(osc.volume.value <= -Infinity) {
+                    osc.volume.rampTo(-6, 0.02);
+                } else {
+                    osc.frequency.rampTo(proximity.cm * 20, 0.1);
+                }
+            } else {
+                if(osc.volume.value > -Infinity) {
+                    osc.volume.rampTo(-Infinity, 1);
+                }
+            }
+        }, 25);
     });
-    Particle.startRendering(context, particles);
 });
 
