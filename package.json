@@ -6,6 +6,7 @@
     "height": 600
   },
   "dependencies": {
-    "johnny-five": "^0.10.7"
+    "johnny-five": "^0.10.7",
+    "nwjs-j5-fix": "^1.0.3"
   }
 }
