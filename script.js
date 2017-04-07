@@ -5,20 +5,12 @@ var board = new five.Board({
     port: "/dev/ttyUSB0"
 });
 
-var particles = [];
-
 window.addEventListener("DOMContentLoaded", function() {
-    var canvas = document.getElementsByTagName("canvas")[0];
-    var context = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    var osc = new Tone.Oscillator(440, "sine").toMaster();
+    osc.start();
 
-    var settings = QuickSettings.create(100, 100, "Particles Settings")
-        .addRange("size", 0, 4, 1, 0.1)
-        .addColor("color", "#ffffff");
-
-    board.on("ready", function() {
+     board.on("ready", function() {
         console.log("I can see the board!");
 
         var led = new five.Led();
@@ -31,23 +23,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
         proximity.within([8, 65], "cm", function() {
             console.log(this.cm);
-
-            var proximitySquare = Math.pow(65 - this.cm, 2);
-            var count = proximitySquare / 100;
-            var size = proximitySquare / 1000;
-            var speed = proximitySquare / 50;
-
-            for (var i = 0; i < count; i++) {
-                var particle = new Particle({
-                    x: canvas.width/2,
-                    y: canvas.height/2,
-                    radius: size * settings.getNumberValue("size"),
-                    speed: speed,
-                    color: settings.getColor("color")
-                });
-
-                particles.push(particle);
-            }
         });
     });
     Particle.startRendering(context, particles);
